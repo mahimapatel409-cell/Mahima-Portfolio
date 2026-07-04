@@ -29,7 +29,7 @@ export default function Journey() {
       icon: <Trophy size={14} />
     },
     {
-      year: "2023 - 2027",
+      year: "2023 - 2028",
       type: "Education",
       title: "B.Tech — Artificial Intelligence & Machine Learning",
       organization: "Shri Ram Institute of Technology, Jabalpur",
