@@ -14,6 +14,7 @@ import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
+import AIAssistant from "./components/AIAssistant";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -39,6 +40,7 @@ export default function App() {
               <About />
               <Skills />
               <Projects />
+              <AIAssistant />
               <Experience />
               <Certifications />
               <Services />

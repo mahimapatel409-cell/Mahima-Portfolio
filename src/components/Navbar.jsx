@@ -1,71 +1,100 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, Sun, Moon } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { darkMode, setDarkMode } = useTheme();
 
-  const navLinks = ['Home', 'About', 'Skills', 'Projects', 'Experience', 'Contact'];
+  const navLinks = [
+    { name: "Home", id: "home" },
+    { name: "About", id: "about" },
+    { name: "Skills", id: "skills" },
+    { name: "Projects", id: "projects" },
+    { name: "Assistant", id: "ai-assistant" },
+    { name: "Experience", id: "experience" },
+    { name: "Contact", id: "contact" },
+  ];
 
   return (
-    <motion.nav 
-      initial={{ y: -50, opacity: 0 }}
+    <motion.nav
+      initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed top-4 left-1/2 transform -translate-x-1/2 z-40 w-[92%] max-w-6xl glass-panel rounded-full px-6 py-3 flex items-center justify-between shadow-2xl"
+      transition={{ duration: 0.4 }}
+      className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-7xl"
     >
-      <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyber-neon to-cyber-purple tracking-tight">
-        MP.AI
-      </div>
+      <div className="flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-5 py-3 shadow-xl">
 
-      {/* Desktop Links */}
-      <div className="hidden md:flex items-center gap-8">
-        {navLinks.map((link) => (
-          <a 
-            key={link} 
-            href={`#${link.toLowerCase()}`}
-            className="text-sm font-medium opacity-80 hover:opacity-100 transition-opacity relative group"
-          >
-            {link}
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-cyber-neon transition-all duration-300 group-hover:w-full" />
-          </a>
-        ))}
-      </div>
-
-      <div className="flex items-center gap-4">
-        <button 
-          onClick={() => setDarkMode(!darkMode)}
-          className="p-2 rounded-full hover:bg-white/10 dark:hover:bg-black/20 transition-colors"
+        {/* Logo */}
+        <a
+          href="#home"
+          className="text-2xl font-bold whitespace-nowrap bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
         >
-          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
+          MP.AI
+        </a>
 
-        {/* Mobile Toggle */}
-        <button className="md:hidden p-1" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu Overlay */}
-      {isOpen && (
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="absolute top-16 left-0 right-0 glass-panel rounded-3xl p-6 flex flex-col gap-4 text-center border md:hidden"
-        >
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex items-center gap-4 xl:gap-6">
           {navLinks.map((link) => (
-            <a 
-              key={link} 
-              href={`#${link.toLowerCase()}`} 
-              onClick={() => setIsOpen(false)}
-              className="text-lg font-medium block py-2"
+            <a
+              key={link.id}
+              href={`#${link.id}`}
+              className="relative text-[14px] xl:text-[15px] font-medium text-gray-300 hover:text-cyan-400 transition duration-300 whitespace-nowrap group"
             >
-              {link}
+              {link.name}
+
+              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
             </a>
           ))}
-        </motion.div>
-      )}
+        </div>
+
+        {/* Right Side */}
+        <div className="flex items-center gap-2">
+
+          {/* Theme Toggle */}
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="p-2 rounded-full hover:bg-white/10 transition"
+          >
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+
+        </div>
+
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.25 }}
+            className="lg:hidden mt-3 rounded-3xl border border-white/10 bg-black/60 backdrop-blur-xl p-5 shadow-xl"
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.id}
+                href={`#${link.id}`}
+                onClick={() => setIsOpen(false)}
+                className="block py-3 text-center text-lg text-gray-300 hover:text-cyan-400 transition"
+              >
+                {link.name}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }
